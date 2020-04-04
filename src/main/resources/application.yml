@@ -1,0 +1,38 @@
+spring:
+#  devtools.restart.enabled=false
+  application:
+    name: message-sender-api
+    env: ${ENVIRONMENT:dev}
+  main:
+    log-startup-info: false
+    allow-bean-definition-overriding: true
+  profiles:
+    include: microservice
+  jackson:
+    serialization:
+      indent_output: true
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+    mapper:
+      default-view-inclusion: true
+  h2:
+    console:
+      enabled: false
+server:  
+  tomcat:
+#    max-threads: 50
+    min-spare-threads: 20
+  undertow:
+    worker-threads: 32
+    direct-buffers: true
+    buffers-per-region: 200
+    buffer-size: 16000
+    io-threads: 4
+  port: ${PORT:2206}
+  servlet:
+    contextPath: ${CONTEXT_PATH:/api/v1/notification}
+    swaggerPath: ${SWAGGER_PATH:/api/v1/notification}
+message-sender-target:
+  soap-server-url: ${SOAP_SERVER_URL:https://uat-messagesender.eurowag.com:666/MessageSenderSoapAPI}

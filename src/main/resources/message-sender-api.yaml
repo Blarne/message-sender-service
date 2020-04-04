@@ -1,0 +1,134 @@
+swagger: '2.0'
+info:
+  description: Message Sender Service - Notifications
+  version: '1.0'
+  termsOfService: 'http://www.karumien.com/terms/'
+  contact:
+    email: info@karumien.com
+  title: Message Sender Service
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+basePath: /api/v1/notification
+schemes:
+  - http
+paths:
+  /send:
+    post:
+      summary: Create Message and send
+      operationId: sendMessage
+      parameters:
+        - in: body
+          name: message
+          description: Message Request
+          schema:
+            $ref: '#/definitions/MessageRequest'
+      responses:
+        '200':
+          description: Message Send
+definitions:
+  ParameterType:
+    type: string
+    enum: [Subject, Body]
+  MessageRequest:
+    type: object
+    description: Message Request Definition
+    required:
+    - messageCode
+    - source
+    properties:
+      clientName:
+        type: string
+        maxLength: 350
+      clientNo: 
+        type: string
+        maxLength: 50
+      language: 
+        type: string
+        maxLength: 5
+      messageCode:
+        type: string
+        maxLength: 50
+      parameters:
+        type: array
+        items:
+          $ref: "#/definitions/MessageParameter"
+      recipients:
+        type: array
+        items:
+          $ref: "#/definitions/MessageRecipient"
+      source:
+        type: string
+        maxLength: 100
+  MessageParameter:
+    type: object
+    required:
+    - parameterType
+    - value
+    properties:
+      parameterType:
+        $ref: "#/definitions/ParameterType"  
+      isVariable:
+        type: boolean
+      value:
+        type: string
+        maxLength: 250
+  MessageRecipient:
+    type: object
+    required:
+    - name
+    properties:
+      address:
+        type: string
+        maxLength: 250
+      name:
+        type: string
+        maxLength: 500
+      phone:
+        type: string
+        maxLength: 100
+  ErrorData:
+    type: object
+    description: EW ErrorMessage model data
+    required:
+    - code
+    properties:
+      code:
+        type: string
+        description: ie. invalid-phone-number-format
+        maxLength: 50
+      attribute: 
+        type: string
+        maxLength: 250
+        description: ie. phoneNumberPrimary
+      description:
+        type: string
+        maxLength: 1000
+        description: ie. Invalid phone number format. Valid is XXX XXX XXX
+      data:
+        type: object
+  ErrorCode:
+    type: string
+    description: Master Error Code
+    enum:
+      - CLIENT_ERROR
+  ErrorMessage:
+    type: object
+    description: EW ErrorMessage model
+    required:
+    - errno
+    - errcode
+    properties:
+      errno: 
+        type: integer
+        default: -1
+      errcode: 
+        $ref: "#/definitions/ErrorCode"
+      errmsg: 
+        type: string
+        maxLength: 250
+        description: Optional error message
+      errdata:
+        type: array
+        items:
+          $ref: "#/definitions/ErrorData"
