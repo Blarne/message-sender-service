@@ -1,6 +1,6 @@
 FROM alpine/git as clone
 WORKDIR /app
-RUN git clone https://github.com/Karumien/message-sender-service
+RUN git clone https://github.com/Blarne/message-sender-service
 
 FROM maven:3.6.3-jdk-11 as build
 WORKDIR /app
