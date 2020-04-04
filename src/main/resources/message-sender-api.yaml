@@ -15,7 +15,7 @@ schemes:
 paths:
   /send:
     post:
-      summary: Create Message and send
+      summary: Create Message and send it
       operationId: sendMessage
       parameters:
         - in: body
@@ -25,7 +25,7 @@ paths:
             $ref: '#/definitions/MessageRequest'
       responses:
         '200':
-          description: Message Send
+          description: Message Sent
 definitions:
   ParameterType:
     type: string
